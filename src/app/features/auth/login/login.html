@@ -1,0 +1,58 @@
+<div class="w-screen h-screen flex justify-center items-center">
+  <div
+    class="w-1/3 h-1/2 bg-white rounded-lg shadow-lg p-8 flex flex-col justify-evenly items-center dark:bg-gray-800"
+  >
+    <h2 class="text-2xl font-bold text-white text-center dark:text-gray-300 mb-6">Login</h2>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-4 w-full sm:w-56"
+    >
+      <div class="mb-4 flex flex-col justify-center gap-2">
+        <p-floatlabel variant="on" class="w-full">
+          <input
+            pInputText
+            id="email"
+            [invalid]="isInvalid('email')"
+            class="w-full"
+            name="email"
+            formControlName="email"
+          />
+          <label for="email">Email</label>
+        </p-floatlabel>
+        @if (isInvalid('email')) {
+          @if (email?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
+          } @else if (email?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple"
+              >Invalid email format.</p-message
+            >
+          }
+        }
+      </div>
+      <div class="flex flex-col justify-center gap-2">
+        <p-iconfield class="w-full">
+          <p-floatlabel variant="on">
+            <input pInputPassword formControlName="password" class="w-full" [(mask)]="mask" />
+            <label for="password">Password</label>
+          </p-floatlabel>
+          <p-inputicon (click)="mask = !mask" style="cursor: pointer">
+            @if (mask) {
+              <svg data-p-icon="eye"></svg>
+            } @else {
+              <svg data-p-icon="eye-slash"></svg>
+            }
+          </p-inputicon>
+        </p-iconfield>
+        @if (isInvalid('password')) {
+          @if (password?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple"
+              >Password is required.</p-message
+            >
+          }
+        }
+      </div>
+      <button pButton severity="contrast" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
