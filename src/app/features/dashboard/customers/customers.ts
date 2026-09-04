@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   inject,
   viewChild,
   ChangeDetectorRef,
@@ -16,10 +15,13 @@ import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { Customer } from '../../../core/services/customerService/customer';
 import { SortEvent } from 'primeng/api';
-import { Search } from '@primeicons/angular/search';
 import { Database } from '@primeicons/angular/database';
 import { CUSTOMER } from '../../../core/interfaces/customer.model';
 import { SkeletonModule } from 'primeng/skeleton';
+import { FilterMetadata } from 'primeng/api';
+import { ViewCustomer } from './view-customer/view-customer';
+import { Eye } from '@primeicons/angular/eye';
+import { LabelModule } from 'primeng/label';
 
 @Component({
   imports: [
@@ -30,9 +32,11 @@ import { SkeletonModule } from 'primeng/skeleton';
     TagModule,
     InputTextModule,
     FormsModule,
-    Search,
+    Eye,
     Database,
     SkeletonModule,
+    ViewCustomer,
+    LabelModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-customers',
@@ -40,21 +44,24 @@ import { SkeletonModule } from 'primeng/skeleton';
   templateUrl: './customers.html',
 })
 export class Customers {
+  dt = viewChild<Table>('dt');
+
   customerService = inject(Customer);
   private cd = inject(ChangeDetectorRef);
-  dt = viewChild<Table>('dt');
+
   customers = signal<CUSTOMER[]>([]);
+  selectedCustomers!: CUSTOMER;
   initialValue!: CUSTOMER[];
   sortedField: string | null = null;
   isSorted: boolean | null = null;
+  loadingCustomer = signal(false);
+  visibleCustomerModal = signal(false);
 
   loading = signal(true);
   ngOnInit() {
     this.customerService.getCustomers().subscribe({
       next: (data: CUSTOMER[]) => {
-        console.log('Fetched customers:', data);
         this.customers.set(data);
-        console.log('Customers after assignment:', this.customers());
         this.initialValue = [...this.customers()];
         setTimeout(() => {
           this.loading.set(false);
@@ -66,6 +73,10 @@ export class Customers {
       },
     });
   }
+  globalFilterValue(table: Table): string {
+    return (table.filters['global'] as FilterMetadata)?.value ?? '';
+  }
+
   customSort(event: SortEvent) {
     if (this.sortedField !== event.field) {
       this.sortedField = event.field ?? null;
@@ -99,5 +110,9 @@ export class Customers {
 
       return event.order! * result;
     });
+  }
+  loadCustomerData(customerData: CUSTOMER) {
+    this.selectedCustomers = customerData;
+    this.visibleCustomerModal.set(true);
   }
 }

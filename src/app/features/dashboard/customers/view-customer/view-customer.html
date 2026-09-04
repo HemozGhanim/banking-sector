@@ -1,0 +1,26 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [dismissableMask]="true"
+  [header]="'Customer : ' + customer().CIF"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1024px': '90vw', '640px': '95vw' }"
+>
+  <div class="flex flex-col gap-1">
+    <p-tabs value="tab1">
+      <p-tablist>
+        @for (tab of tabs; track tab.id) {
+          <p-tab [value]="tab.id">{{ tab.title }}</p-tab>
+        }
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="tab1">
+          <app-customer-data [customerData]="customer()" />
+        </p-tabpanel>
+        <p-tabpanel value="tab2">
+          <app-accounts [customerId]="customer().CIF" />
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+</p-dialog>

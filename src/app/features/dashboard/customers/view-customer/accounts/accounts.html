@@ -1,0 +1,24 @@
+<p-table [value]="accounts()" [tableStyle]="{ 'min-width': '60rem' }">
+  <ng-template #header>
+    <tr>
+      <th>Id</th>
+      <th>Customer Id</th>
+      <th>Type</th>
+      <th>Currency</th>
+      <th>Balance</th>
+      <th>Iban</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-account>
+    <tr>
+      <td>{{ account.id }}</td>
+      <td>{{ account.customerId }}</td>
+      <td>{{ account.type }}</td>
+      <td>{{ account.currency }}</td>
+      <td>{{ account.balance }}</td>
+      <td>{{ account.iban }}</td>
+      <td>{{ account.status }}</td>
+    </tr>
+  </ng-template>
+</p-table>

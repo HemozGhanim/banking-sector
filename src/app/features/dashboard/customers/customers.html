@@ -1,34 +1,31 @@
 <div>
-  <div>
-    <h1 class="text-2xl font-semibold text-surface-900 dark:text-surface-0">Customers</h1>
-    <p class="mt-1 text-sm text-surface-500 dark:text-surface-400">
-      Manage your customers and their information.
-    </p>
-  </div>
   <div class="mb-3 flex justify-end">
-    <p-iconfield>
-      <p-inputicon>
-        <svg data-p-icon="search" />
-      </p-inputicon>
-      <input
-        pInputText
-        pSize="small"
-        type="text"
-        (input)="dt.filterGlobal($event.target.value, 'contains')"
-        placeholder="Keyword search"
-      />
-    </p-iconfield>
+    <input
+      pInputText
+      pSize="small"
+      type="text"
+      (input)="dt.filterGlobal($event.target.value, 'contains')"
+      placeholder="Keyword search"
+      class="text-center"
+    />
   </div>
   <p-table
     #dt
     [value]="customers()"
-    dataKey="id"
-    (sortFunction)="customSort($event)"
-    [customSort]="true"
     [globalFilterFields]="['CIF', 'name', 'email', 'phone', 'nationalId', 'segment']"
+    selectionMode="single"
+    [(selection)]="selectedCustomers"
+    dataKey="CIF"
+    [customSort]="true"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [lazy]="true"
+    (sortFunction)="customSort($event)"
   >
+    <ng-template #caption>
+      <h1 class="text-2xl font-semibold text-surface-900 dark:text-surface-0">Customers</h1>
+      <p class="mt-1 text-sm text-surface-500 dark:text-surface-400">
+        Manage your customers and their information.
+      </p>
+    </ng-template>
     <ng-template #header>
       <tr>
         <th pSortableColumn="CIF" style="min-width: 14rem">
@@ -67,10 +64,11 @@
             <p-sort-icon field="segment" />
           </div>
         </th>
+        <th style="width: 5rem"></th>
       </tr>
     </ng-template>
     <ng-template #body let-customer>
-      <tr>
+      <tr class="hover:bg-surface-100 dark:hover:bg-surface-100" [pSelectableRow]="customer">
         @if (loading()) {
           <td><p-skeleton width="5rem" height="1rem" borderRadius="16px" /></td>
           <td><p-skeleton width="5rem" height="1rem" borderRadius="16px" /></td>
@@ -78,47 +76,38 @@
           <td><p-skeleton width="6rem" height="1rem" borderRadius="16px" /></td>
           <td><p-skeleton width="3rem" height="0.6rem" borderRadius="4px" /></td>
           <td><p-skeleton width="6rem" height="1rem" borderRadius="16px" /></td>
+          <td><p-skeleton width="6rem" height="1rem" borderRadius="16px" /></td>
         } @else {
-          <td [pEditableColumn]="customer.CIF" pEditableColumnField="CIF">
-            <p-cell-editor>
-              <ng-template #input>
-                <input pInputText type="text" [(ngModel)]="customer.CIF" fluid pSize="small" />
-              </ng-template>
-              <ng-template #output>
-                <span class="font-medium">{{ customer.CIF }}</span>
-              </ng-template>
-            </p-cell-editor>
+          <td>
+            <span class="font-medium">{{ customer.CIF }}</span>
           </td>
-          <td [pEditableColumn]="customer.name" pEditableColumnField="name">
-            <p-cell-editor>
-              <ng-template #input>
-                <input pInputText type="text" [(ngModel)]="customer.name" fluid pSize="small" />
-              </ng-template>
-              <ng-template #output>
-                <span class="font-medium">{{ customer.name }}</span>
-              </ng-template>
-            </p-cell-editor>
+          <td>
+            <span class="font-medium">{{ customer.name }}</span>
           </td>
-          <td [pEditableColumn]="customer.email" pEditableColumnField="email">
-            <p-cell-editor>
-              <ng-template #input>
-                <p-inputnumber
-                  [(ngModel)]="customer.email"
-                  mode="currency"
-                  currency="USD"
-                  locale="en-US"
-                  fluid
-                  size="small"
-                />
-              </ng-template>
-              <ng-template #output>
-                <span class="font-semibold">{{ customer.email }}</span>
-              </ng-template>
-            </p-cell-editor>
+          <td>
+            <span class="font-semibold">{{ customer.email }}</span>
           </td>
           <td>{{ customer.phone }}</td>
           <td>{{ customer.nationalId }}</td>
           <td>{{ customer.segment }}</td>
+          <td>
+            <button
+              type="button"
+              pButton
+              iconOnly
+              [disabled]="loadingCustomer()"
+              (click)="loadCustomerData(customer)"
+              severity="secondary"
+              rounded
+              class="cursor-pointer"
+            >
+              @if (loadingCustomer()) {
+                <svg data-p-icon="spinner" class="animate-spin"></svg>
+              } @else {
+                <svg data-p-icon="eye"></svg>
+              }
+            </button>
+          </td>
         }
       </tr>
     </ng-template>
@@ -145,3 +134,10 @@
     </ng-template>
   </p-table>
 </div>
+
+@if (visibleCustomerModal()) {
+  <app-view-customer
+    [customer]="selectedCustomers"
+    [(visible)]="visibleCustomerModal"
+  ></app-view-customer>
+}

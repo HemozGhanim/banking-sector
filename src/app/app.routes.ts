@@ -26,11 +26,6 @@ export const routes: Routes = [
           import('./features/dashboard/customers/customers').then((m) => m.Customers),
       },
       {
-        path: 'accounts',
-        loadComponent: () =>
-          import('./features/dashboard/accounts/accounts').then((m) => m.Accounts),
-      },
-      {
         path: 'transactions',
         loadComponent: () =>
           import('./features/dashboard/transactions/transactions').then((m) => m.Transactions),

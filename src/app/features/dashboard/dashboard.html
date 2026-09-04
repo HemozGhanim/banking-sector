@@ -3,12 +3,16 @@
     <p-sidebar
       id="variants-demo"
       [variant]="variant"
-      [collapsible]="collapsible"
+      [collapsible]="collapsible()"
       [side]="side"
-      [overlay]="overlay"
+      [overlay]="overlay()"
       [openOnHover]="openOnHover"
+      [(open)]="sidebarOpen"
     >
       <p-sidebar-spacer />
+      @if (isMobile()) {
+        <p-sidebar-backdrop />
+      }
       <p-sidebar-aside>
         <p-sidebar-panel>
           <p-sidebar-header>
@@ -84,6 +88,9 @@
                   <span>{{ userEmail() }}</span>
                 </button>
               </p-sidebar-menu-item>
+              <button pButton severity="secondary" aria-label="Save" (click)="logout()">
+                Sign-Out <svg data-p-icon="sign-out"></svg>
+              </button>
             </p-sidebar-menu>
           </p-sidebar-footer>
           <button pSidebarRail></button>
