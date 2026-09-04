@@ -10,15 +10,13 @@ import { LabelModule } from 'primeng/label';
 import { SidebarCollapsible, SidebarSide, SidebarVariant } from 'primeng/types/sidebar';
 import { Sidebar } from '@primeicons/angular/sidebar';
 import { ChevronDown } from '@primeicons/angular/chevron-down';
-import { EllipsisV } from '@primeicons/angular/ellipsis-v';
 import { PIcon } from '@primeicons/angular/p-icon';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SignOut } from '@primeicons/angular';
 
 interface NavItem {
   icon: string;
   label: string;
-  isActive?: boolean;
   badge?: string;
   route?: string;
   subItems?: { label: string; isActive?: boolean }[];
@@ -41,10 +39,10 @@ interface NavGroup {
     FormsModule,
     Sidebar,
     ChevronDown,
-    EllipsisV,
     PIcon,
     RouterOutlet,
     RouterLink,
+    RouterLinkActive,
     SignOut,
   ],
   selector: 'app-dashboard',
@@ -73,7 +71,7 @@ export class Dashboard {
     {
       label: 'Management',
       items: [
-        { icon: 'users', label: 'Customers', isActive: true, route: '/dashboard/customers' },
+        { icon: 'users', label: 'Customers', route: '/dashboard/customers' },
         { icon: 'dollar', label: 'Transactions', route: '/dashboard/transactions' },
       ],
     },
@@ -91,6 +89,14 @@ export class Dashboard {
 
   hasActiveSub(item: NavItem): boolean {
     return !!item.subItems?.some((s) => s.isActive);
+  }
+
+  // Offcanvas/overlay sidebar has no built-in "close on navigate" behavior,
+  // so collapse it manually once a leaf nav link is actually followed.
+  closeMobileSidebar() {
+    if (this.isMobile()) {
+      this.sidebarOpen.set(false);
+    }
   }
   logout() {
     localStorage.removeItem('isAuthenticated');

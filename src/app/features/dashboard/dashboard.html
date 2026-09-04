@@ -42,8 +42,11 @@
                       >
                         <button
                           pSidebarMenuButton
-                          [isActive]="!!item.isActive"
+                          routerLinkActive
+                          #rla="routerLinkActive"
+                          [isActive]="rla.isActive"
                           [routerLink]="item.route"
+                          (click)="!item.subItems && closeMobileSidebar()"
                         >
                           <svg [pIcon]="item.icon"></svg>
                           <span>{{ item.label }}</span>
@@ -58,16 +61,16 @@
                           <p-sidebar-menu-sub>
                             @for (sub of item.subItems; track sub.label) {
                               <p-sidebar-menu-sub-item>
-                                <button pSidebarMenuSubButton [isActive]="!!sub.isActive">
+                                <button
+                                  pSidebarMenuSubButton
+                                  [isActive]="!!sub.isActive"
+                                  (click)="closeMobileSidebar()"
+                                >
                                   <span>{{ sub.label }}</span>
                                 </button>
                               </p-sidebar-menu-sub-item>
                             }
                           </p-sidebar-menu-sub>
-                        } @else if (!item.badge) {
-                          <button pSidebarMenuAction showOnHover>
-                            <svg data-p-icon="ellipsis-v"></svg>
-                          </button>
                         }
                       </p-sidebar-menu-item>
                     }
