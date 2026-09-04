@@ -22,6 +22,8 @@ import { FilterMetadata } from 'primeng/api';
 import { ViewCustomer } from './view-customer/view-customer';
 import { Eye } from '@primeicons/angular/eye';
 import { LabelModule } from 'primeng/label';
+import { ButtonModule } from 'primeng/button';
+import { Spinner } from '@primeicons/angular/spinner';
 
 @Component({
   imports: [
@@ -37,6 +39,8 @@ import { LabelModule } from 'primeng/label';
     SkeletonModule,
     ViewCustomer,
     LabelModule,
+    ButtonModule,
+    Spinner,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-customers',

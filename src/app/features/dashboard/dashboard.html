@@ -101,7 +101,7 @@
       </p-sidebar-aside>
     </p-sidebar>
     @if (side === 'left') {
-      <p-sidebar-main>
+      <p-sidebar-main class="min-w-0">
         <header
           class="flex h-12 items-center gap-2 border-b border-surface-200 dark:border-gray-700 px-4"
         >
@@ -116,7 +116,7 @@
             <svg data-p-icon="sidebar"></svg>
           </button>
         </header>
-        <div class="flex-1 p-4 flex flex-col gap-4">
+        <div class="flex-1 min-w-0 p-4 flex flex-col gap-4">
           <router-outlet></router-outlet>
         </div>
       </p-sidebar-main>

@@ -7,3 +7,8 @@ export interface TRANSACTION {
   merchant: string;
   category: string;
 }
+
+export interface TRANSACTION_TYPE {
+  code: string;
+  label: string;
+}

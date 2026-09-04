@@ -113,12 +113,16 @@
     </ng-template>
     <ng-template #emptymessage>
       <tr>
-        <td colspan="6">
+        <td colspan="7">
           <div class="flex flex-col items-center justify-center gap-3 py-16 text-center">
             <div
               class="w-14 h-14 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center"
             >
-              <svg data-p-icon="database" class="text-xl text-surface-400 dark:text-surface-500" />
+              <svg
+                data-p-icon="database"
+                [size]="64"
+                class="text-xl text-surface-400 dark:text-surface-500"
+              />
             </div>
             <div>
               <p class="m-0 font-semibold text-surface-900 dark:text-surface-0">

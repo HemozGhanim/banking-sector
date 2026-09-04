@@ -91,8 +91,6 @@ export class Dashboard {
     return !!item.subItems?.some((s) => s.isActive);
   }
 
-  // Offcanvas/overlay sidebar has no built-in "close on navigate" behavior,
-  // so collapse it manually once a leaf nav link is actually followed.
   closeMobileSidebar() {
     if (this.isMobile()) {
       this.sidebarOpen.set(false);
@@ -104,4 +102,3 @@ export class Dashboard {
     this.router.navigate(['/auth']);
   }
 }
-  
